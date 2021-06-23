@@ -3,6 +3,14 @@
     require '../../includes/config/database.php';
     $db = conectarDB();
 
+    //Consultar para obtener los vendedores
+    $consulta = "SELECT * FROM vendedores";
+    $resultado = mysqli_query($db, $consulta);
+
+    // echo "<pre>";
+    // var_dump($_POST);
+    // echo "</pre>";
+
     //Arreglo con mensaje de errores
     $errores = [];
 
@@ -13,6 +21,7 @@
     $wc = '';
     $estacionamiento = '';
     $vendedorId = '';
+    $creado = date('Y/m/d');
 
     //Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -64,7 +73,7 @@
 
         if(empty($errores)){
             //Insertar en la base de datos
-            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedorId) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedorId' ) ";
+            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId' ) ";
 
             //echo $query;
 
@@ -126,9 +135,9 @@
 
                 <select name="vendedor">
                     <option value="">-- Seleccione --</option>
-                    <option value="1">Christian HC</option>
-                    <option value="2">Maria RM</option>
-                    <option value="3">Christian HR</option>
+                    <?php while($vendedor = mysqli_fetch_assoc($resultado) ): ?>
+                        <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?> </option>
+                    <?php endwhile; ?>
                 </select>
 
             </fieldset>
