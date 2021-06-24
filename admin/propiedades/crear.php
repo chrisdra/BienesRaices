@@ -80,7 +80,9 @@
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
-                echo "Insertado Correctamente";
+                //Redireccionar al usuario
+
+                header('Location: /admin');
             }
         }
     }
