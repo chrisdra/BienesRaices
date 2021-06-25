@@ -29,13 +29,21 @@
         // var_dump($_POST);
         // echo "</pre>";
 
-        $titulo = $_POST['titulo'];
-        $precio = $_POST['precio'];
-        $descripcion = $_POST['descripcion'];
-        $habitaciones = $_POST['habitaciones'];
-        $wc = $_POST['wc'];
-        $estacionamiento = $_POST['estacionamiento'];
-        $vendedorId = $_POST['vendedor'];
+        // echo "<pre>";
+        // var_dump($_FILES);
+        // echo "</pre>";
+
+        $titulo = mysqli_real_escape_string(  $db,  $_POST['titulo'] );
+        $precio = mysqli_real_escape_string(  $db,  $_POST['precio'] );
+        $descripcion = mysqli_real_escape_string(  $db,  $_POST['descripcion'] );
+        $habitaciones = mysqli_real_escape_string(  $db,  $_POST['habitaciones'] );
+        $wc = mysqli_real_escape_string(  $db,  $_POST['wc'] );
+        $estacionamiento = mysqli_real_escape_string(  $db,  $_POST['estacionamiento'] );
+        $vendedorId = mysqli_real_escape_string(  $db,  $_POST['vendedor'] );
+        $creado = date('Y/m/d');
+
+        //Asignar files hacia una variable
+        $imagen = $_FILES['imagen'];
 
         if(!$titulo) {
             $errores[] = "Debes añadir un titulo";
@@ -65,6 +73,17 @@
             $errores[] = "Elige un vendedor";
         }
 
+        if(!$imagen['name'] || $imagen['error']) {
+            $errores[] = "La imagen es Obligatoria";
+        }
+
+        // Validar por tamaño (100 Kb max.)
+        $medida = 1000 * 100;
+
+        if($imagen['size'] > $medida) {
+            $errores[] = 'La Imagen es muy pesada';
+        }
+
         // echo "<pre>";
         // var_dump($errores);
         // echo "</pre>";
@@ -72,6 +91,20 @@
         //Revisar que el array de errores este vacio
 
         if(empty($errores)){
+
+            /** SUBIDA DE ARCHIVOS **/
+
+            //Crear carpeta
+            $carpetaImagenes = '../../imagenes';
+
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
+            }
+            
+            //Subir la imagen
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . "/archivo.jpg" );
+            exit;
+
             //Insertar en la base de datos
             $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedorId' ) ";
 
@@ -102,7 +135,7 @@
             </div>
         <?php endforeach ?>
 
-        <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
+        <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
             <fieldset>
                 <legend>Informacion General</legend>
 
@@ -113,7 +146,7 @@
                 <input type="number" id="precio" name="precio" placeholder="Precio Propiedad" value="<?php echo $precio; ?>">
 
                 <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" accept="image/jpeg, image/png">
+                <input type="file" id="imagen" accept="image/jpeg, image/png" name="imagen">
 
                 <label for="descripcion">Descripcion:</label>
                 <textarea id="descripcion" name="descripcion"><?php echo $descripcion; ?></textarea>
