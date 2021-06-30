@@ -28,14 +28,13 @@
     //Arreglo con mensaje de errores
     $errores = [];
 
-    $titulo = '';
-    $precio = '';
-    $descripcion = '';
-    $habitaciones = '';
-    $wc = '';
-    $estacionamiento = '';
-    $vendedorId = '';
-    $creado = date('Y/m/d');
+    $titulo = $propiedad['titulo'];
+    $precio = $propiedad['precio'];
+    $descripcion = $propiedad['descripcion'];
+    $habitaciones = $propiedad['habitaciones'];
+    $wc = $propiedad['wc'];
+    $estacionamiento = $propiedad['estacionamiento'];
+    $vendedorId = $propiedad['vendedorId'];
 
     //Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
