@@ -88,9 +88,8 @@
             $errores[] = "Elige un vendedor";
         }
 
-        // Validar por tamaño (100 Kb max.)
-        $medida = 1000 * 100;
-
+        // Validar por tamaño (1mb max.)
+        $medida = 1000 * 1000;
         if($imagen['size'] > $medida) {
             $errores[] = 'La Imagen es muy pesada';
         }
@@ -103,33 +102,40 @@
 
         if(empty($errores)){
 
+            // //Crear carpeta
+            $carpetaImagenes = '../../imagenes/';
+
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
+            }
+
+            $nombreImagen = '';
+
             // /** SUBIDA DE ARCHIVOS **/
 
-            // //Crear carpeta
-            // $carpetaImagenes = '../../imagenes/';
+            if($imagen['name']) {
+                //Eliminar la iagen previa
+                unlink($carpetaImagenes . $propiedad['imagen']);
 
-            // if(!is_dir($carpetaImagenes)) {
-            //     mkdir($carpetaImagenes);
-            // }
-
-            // //Generar un nombre unico
-            // $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
+                //Generar un nombre unico
+                $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
             
-            // //Subir la imagen
-            // move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
+                //Subir la imagen
+                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen );
+            } else {
+                $nombreImagen = $propiedad['imagen'];
+            }
 
             //Insertar en la base de datos
-            $query = " UPDATE propiedades SET titulo = '${titulo}', precio = '${precio}', descripcion = '${descripcion}', habitaciones = ${habitaciones}, wc = ${wc}, estacionamiento = ${estacionamiento}, vendedorId = ${vendedorId} WHERE id = ${id} ";
+            $query = " UPDATE propiedades SET titulo = '${titulo}', precio = '${precio}', imagen = '${nombreImagen}', descripcion = '${descripcion}', habitaciones = ${habitaciones}, wc = ${wc}, estacionamiento = ${estacionamiento}, vendedorId = ${vendedorId} WHERE id = ${id} ";
 
-            echo $query;
-
-            exit;
+            // echo $query;
 
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
                 //Redireccionar al usuario
-                header('Location: /admin?resultado=1');
+                header('Location: /admin?resultado=2');
             }
         }
     }
