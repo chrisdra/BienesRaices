@@ -1,4 +1,23 @@
 <?php 
+
+    $id = $_GET['id'];
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if(!$id) {
+        header('Location: /');
+    }
+
+    //Importar la conexion
+    require __DIR__ . '/../config/database.php';
+    $db = conectarDB();
+
+    //Consultar
+    $query = "SELECT * FROM propiedades LIMIT ${limite}";
+
+    //Obtener resultado
+    $resultado = mysqli_query($db, $query);
+
+
     require 'includes/funciones.php';
     incluirTemplate('header');
 ?>
