@@ -8,9 +8,9 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        echo"<pre>";
-        var_dump($_POST);
-        echo"</pre>"; 
+        // echo"<pre>";
+        // var_dump($_POST);
+        // echo"</pre>"; 
 
         $email = mysqli_real_escape_string($db, fiLter_var( $_POST['email'], FILTER_VALIDATE_EMAIL) );
         $password = mysqli_real_escape_string($db, $_POST['password']) ;
@@ -24,7 +24,16 @@
         }
 
         if(empty($errores)) {
+            //Revisar si el usuario existe
+            $query = "SELECT * FROM usuarios WHERE email = '${email}' ";
+            $resultado = mysqli_query($db, $query);
+            var_dump($resultado);
 
+            if( $resultado->num_rows ) {
+                //Revisar si el password es correcto
+            } else {
+                $errores[] = "El Usuario no existe";
+            }
         }
     }
 
