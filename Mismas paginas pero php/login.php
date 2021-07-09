@@ -38,6 +38,12 @@
 
                 if($auth) {
                     //El usuario esta autenticado
+                    session_start();
+
+                    //Llenar el arreglo de la sesion
+                    $_SESSION['usuario'] = $usuario['email'];
+                    $_SESSION['login'] = true;
+                    
                 } else {
                     $errores[] = 'El password es incorrecto';
                 }
