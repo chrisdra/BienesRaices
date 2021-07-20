@@ -5,18 +5,11 @@
 
     use App\Propiedad;
 
-    $propiedad = new Propiedad;
+    estaAutenticado();
 
-    echo "<pre>";
-    var_dump($propiedad);
-    echo "</pre>";
-    exit;
-
-    $auth = estaAutenticado();
-
-    if(!$auth) {
-        header('Location: /');
-    }
+    // if(!$auth) {
+    //     header('Location: /');
+    // }
 
     //Base de datos
     // require '../../includes/config/database.php';
