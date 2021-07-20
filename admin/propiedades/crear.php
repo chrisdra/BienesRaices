@@ -1,5 +1,17 @@
 <?php
-    require '../../includes/funciones.php';
+
+    require '../../includes/app.php';
+    // require '../../includes/funciones.php';
+
+    use App\Propiedad;
+
+    $propiedad = new Propiedad;
+
+    echo "<pre>";
+    var_dump($propiedad);
+    echo "</pre>";
+    exit;
+
     $auth = estaAutenticado();
 
     if(!$auth) {
@@ -7,7 +19,7 @@
     }
 
     //Base de datos
-    require '../../includes/config/database.php';
+    // require '../../includes/config/database.php';
     $db = conectarDB();
 
     //Consultar para obtener los vendedores
