@@ -1,0 +1,17 @@
+{
+    "name": "chris/bienesraices-hc",
+    "description": "Creando un proyecto con POO",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Christian Herrera Cabezas",
+            "email": "chrisdra.hc@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./classes"
+        }
+    }
+}
