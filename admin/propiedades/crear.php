@@ -37,13 +37,20 @@
 
     //Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        $propiedad = new Propiedad($_POST);
+
+        // $propiedad->guardar();
+
+        debugear($propiedad);
+        
         // echo "<pre>";
         // var_dump($_POST);
         // echo "</pre>";
 
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
+        echo "<pre>";
+        var_dump($_FILES);
+        echo "</pre>";
 
         $titulo = mysqli_real_escape_string(  $db,  $_POST['titulo'] );
         $precio = mysqli_real_escape_string(  $db,  $_POST['precio'] );
@@ -180,7 +187,7 @@
             <fieldset>
                 <legend>Vendedor</legend>
 
-                <select name="vendedor">
+                <select name="vendedorId">
                     <option value="">-- Seleccione --</option>
                     <?php while($vendedor = mysqli_fetch_assoc($resultado) ): ?>
                         <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?> </option>
