@@ -19,13 +19,9 @@
     $consulta = "SELECT * FROM vendedores";
     $resultado = mysqli_query($db, $consulta);
 
-    // echo "<pre>";
-    // var_dump($_POST);
-    // echo "</pre>";
-
     //Arreglo con mensaje de errores
-    $errores = [];
-
+    $errores = Propiedad::getErrores();
+    
     $titulo = '';
     $precio = '';
     $descripcion = '';
@@ -40,74 +36,38 @@
         
         $propiedad = new Propiedad($_POST);
 
-        $propiedad->guardar();
+        $errores = $propiedad->validar();
         
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
-
-        echo "<pre>";
-        var_dump($_FILES);
-        echo "</pre>";
-
-        $titulo = mysqli_real_escape_string(  $db,  $_POST['titulo'] );
-        $precio = mysqli_real_escape_string(  $db,  $_POST['precio'] );
-        $descripcion = mysqli_real_escape_string(  $db,  $_POST['descripcion'] );
-        $habitaciones = mysqli_real_escape_string(  $db,  $_POST['habitaciones'] );
-        $wc = mysqli_real_escape_string(  $db,  $_POST['wc'] );
-        $estacionamiento = mysqli_real_escape_string(  $db,  $_POST['estacionamiento'] );
-        $vendedorId = mysqli_real_escape_string(  $db,  $_POST['vendedor'] );
-        $creado = date('Y/m/d');
-
-        //Asignar files hacia una variable
-        $imagen = $_FILES['imagen'];
-
-        if(!$titulo) {
-            $errores[] = "Debes añadir un titulo";
-        }
-
-        if(!$precio) {
-            $errores[] = "El Precio es Obligatorio";
-        }
-
-        if( strlen( $descripcion ) < 50) {
-            $errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";
-        }
-
-        if(!$habitaciones) {
-            $errores[] = "El numero de habitaciones es obligatorio";
-        }
-
-        if(!$wc) {
-            $errores[] = "El numero de Baños es obligatorio";
-        }
-
-        if(!$estacionamiento) {
-            $errores[] = "El numero de lugares de Estacionamieno es obligatorio";
-        }
-
-        if(!$vendedorId) {
-            $errores[] = "Elige un vendedor";
-        }
-
-        if(!$imagen['name'] || $imagen['error']) {
-            $errores[] = "La imagen es Obligatoria";
-        }
-
-        // Validar por tamaño (100 Kb max.)
-        $medida = 1000 * 100;
-
-        if($imagen['size'] > $medida) {
-            $errores[] = 'La Imagen es muy pesada';
-        }
-
-        // echo "<pre>";
-        // var_dump($errores);
-        // echo "</pre>";
-
         //Revisar que el array de errores este vacio
-
         if(empty($errores)){
+            $propiedad->guardar();
+        
+            //Esto fue remplazado por el "Guardar" de Propiedad.php
+            // $titulo = mysqli_real_escape_string(  $db,  $_POST['titulo'] );
+            // $precio = mysqli_real_escape_string(  $db,  $_POST['precio'] );
+            // $descripcion = mysqli_real_escape_string(  $db,  $_POST['descripcion'] );
+            // $habitaciones = mysqli_real_escape_string(  $db,  $_POST['habitaciones'] );
+            // $wc = mysqli_real_escape_string(  $db,  $_POST['wc'] );
+            // $estacionamiento = mysqli_real_escape_string(  $db,  $_POST['estacionamiento'] );
+            // $vendedorId = mysqli_real_escape_string(  $db,  $_POST['vendedor'] );
+            // $creado = date('Y/m/d');
+
+            //Asignar files hacia una variable
+            $imagen = $_FILES['imagen'];
+
+            /* Todo esto se encuentra en "Validar" de Propiedad.php
+            if(!$titulo) { $errores[] = "Debes añadir un titulo"; }
+            if(!$precio) { $errores[] = "El Precio es Obligatorio"; }
+            if( strlen( $descripcion ) < 50) { $errores[] = "La descripcion es obligatoria y debe tener al menos 50 caracteres";}
+            if(!$habitaciones) { $errores[] = "El numero de habitaciones es obligatorio"; }
+            if(!$wc) { $errores[] = "El numero de Baños es obligatorio"; }
+            if(!$estacionamiento) { $errores[] = "El numero de lugares de Estacionamieno es obligatorio"; }
+            if(!$vendedorId) { $errores[] = "Elige un vendedor"; }
+            if(!$imagen['name'] || $imagen['error']) { $errores[] = "La imagen es Obligatoria"; }
+            // Validar por tamaño (100 Kb max.)
+            $medida = 1000 * 100;
+            if($imagen['size'] > $medida) { $errores[] = 'La Imagen es muy pesada'; }
+            */
 
             /** SUBIDA DE ARCHIVOS **/
 
